@@ -47,13 +47,13 @@ while x < 5:
         insta_clock_string = insta_clock_time_list[0]
         insta_clock_string_sliced_int = int(insta_clock_string[6:])
         msg = f"Timer found, waiting {insta_clock_string_sliced_int} seconds..."
+        print(msg)
         time.sleep(insta_clock_string_sliced_int + 1)
         driver.find_element_by_id('formcartbutton').click()
         wait()
         try:
             driver.find_element_by_class_name('addcartbutton').click()
             print("First method successful, followers should arrive shortly! Exiting...")
-            time.sleep(5)
             driver.quit()
             sys.exit()
         except:
