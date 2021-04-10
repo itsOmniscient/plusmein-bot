@@ -26,6 +26,7 @@ def wait():
     WebDriverWait(driver, 30).until(lambda driver: driver.execute_script('return document.readyState') == 'complete')
 
 retry = 0
+success = False
 while retry < 5:
     driver.get("https://plusmein.com/index.php?page=addfreefollowers")
     wait()
