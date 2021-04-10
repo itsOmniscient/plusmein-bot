@@ -25,8 +25,8 @@ driver = webdriver.Firefox(fp, options=options)
 def wait():
     WebDriverWait(driver, 30).until(lambda driver: driver.execute_script('return document.readyState') == 'complete')
 
-x = 0
-while x < 5:
+retry = 0
+while retry < 5:
     driver.get("https://plusmein.com/index.php?page=addfreefollowers")
     wait()
     driver.find_element_by_xpath('//*[@id="header2"]/header/div/div/div/a[2]').click()
@@ -54,8 +54,7 @@ while x < 5:
         try:
             driver.find_element_by_class_name('addcartbutton').click()
             print("First method successful, followers should arrive shortly! Exiting...")
-            driver.quit()
-            sys.exit()
+            success = True
         except:
             print("First method unsuccessful...")
     except:
@@ -64,11 +63,14 @@ while x < 5:
         try:
             driver.find_element_by_class_name('addcartbutton').click()
             print("Second method successful, followers should arrive shortly! Exiting...")
-            driver.quit()
-            sys.exit()
+            success = True
         except:
             print("First and second method unsuccessful, retrying...")
-    x = x+1
+    if success == True:
+        driver.quit()
+        sys.exit()
+    else:
+        retry = retry+1
 print("Unsuccessful after five tries, please try again at a later time.")
 time.sleep(5)
 driver.quit()
