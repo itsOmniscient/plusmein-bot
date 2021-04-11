@@ -54,6 +54,7 @@ while retry < 5:
         wait()
         try:
             driver.find_element_by_class_name('addcartbutton').click()
+            time.sleep(5)
             print("First method successful, followers should arrive shortly! Exiting...")
             success = True
         except:
@@ -63,6 +64,7 @@ while retry < 5:
         time.sleep(1)
         try:
             driver.find_element_by_class_name('addcartbutton').click()
+            time.sleep(5)
             print("Second method successful, followers should arrive shortly! Exiting...")
             success = True
         except:
