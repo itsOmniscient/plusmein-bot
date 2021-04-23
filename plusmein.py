@@ -27,18 +27,22 @@ def wait():
 
 retry = 0
 success = False
-while retry < 5:
+attempt = 0
+print("Please wait, this process can take a couple of minutes...")
+while retry <= 10:
     driver.get("https://plusmein.com/index.php?page=addfreefollowers")
     wait()
-    driver.find_element_by_xpath('//*[@id="header2"]/header/div/div/div/a[2]').click()
-    wait()
-    website_username_id = driver.find_element_by_id('username')
-    website_username_id.send_keys(instagram_username)
-    time.sleep(1)
-    driver.find_element_by_id('targetuser').click()
-    print("Searching for timer...")
-    time.sleep(4)
-    driver.find_element_by_id('formcartbutton').click()
+    try:
+        driver.find_element_by_xpath('//*[@id="header2"]/header/div/div/div/a[2]').click()
+        wait()
+        website_username_id = driver.find_element_by_id('username')
+        website_username_id.send_keys(instagram_username)
+        time.sleep(1)
+        driver.find_element_by_id('targetuser').click()
+        time.sleep(4)
+        driver.find_element_by_id('formcartbutton').click()
+    except:
+        success = False
     wait()
     try:
         insta_clock_element = driver.find_element_by_xpath('//*[@id="clock"]')
@@ -55,25 +59,37 @@ while retry < 5:
         try:
             driver.find_element_by_class_name('addcartbutton').click()
             time.sleep(5)
-            print("First method successful, followers should arrive shortly! Exiting...")
-            success = True
+            try:
+                congrats_msg = driver.find_element_by_xpath('//*[@id="pricing_table3"]/div/div/div/div/span/center/span')
+                success = True
+            except:
+                success = False
         except:
-            print("First method unsuccessful...")
+            pass
     except:
-        print("Timer was probably not found. Trying something else...")
         time.sleep(1)
         try:
             driver.find_element_by_class_name('addcartbutton').click()
             time.sleep(5)
-            print("Second method successful, followers should arrive shortly! Exiting...")
-            success = True
+            try:
+                congrats_msg = driver.find_element_by_xpath('//*[@id="pricing_table3"]/div/div/div/div/span/center/span/span')
+                success = True
+            except:
+                success = False
         except:
-            print("First and second method unsuccessful, retrying...")
+            pass
     if success == True:
+        print("Successful! Followers should arrive shortly! Exiting...")
+        time.sleep(5)
         driver.quit()
         sys.exit()
     else:
-        retry = retry+1
-print("Unsuccessful after five tries, please try again at a later time.")
+        if(retry <= 9):
+            attempt += 1
+            msg2 = f"Retrying...{attempt}/10"
+            print(msg2)
+        retry += 1
+print("Unsuccessful! Please try again later.")
 time.sleep(5)
 driver.quit()
+sys.exit()
